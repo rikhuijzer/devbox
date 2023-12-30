@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t devbox .
+docker build --platform linux/amd64 -t devbox .

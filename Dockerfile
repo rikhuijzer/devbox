@@ -7,15 +7,14 @@ RUN set -eux; \
         ca-certificates \
         cmake \
         curl \
-        fzf \
         fish \
+        fzf \
         git \
         gnupg \
         htop \
         jq \
         make \
         ncdu \
-        neovim \
         nodejs \
         openssh-client \
         python3 \
@@ -28,6 +27,9 @@ RUN set -eux; \
         xclip \
         zip \
     ; \
+    curl -L https://github.com/neovim/neovim-releases/releases/download/nightly/nvim-linux64.deb -o nvim-linux64.deb; \
+        apt-get install -y ./nvim-linux64.deb; \
+        rm -rf nvim-linux64.deb; \
     pip3 install --upgrade pip; \
     pip3 install -U \
         setuptools \
