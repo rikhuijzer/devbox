@@ -26,6 +26,7 @@ RUN set -eux; \
         make \
         ncdu \
         openssh-client \
+        ninja-build \
         python3 \
         python3-pip \
         ranger \
@@ -67,6 +68,7 @@ RUN set -eux; \
     sh -c 'curl -fLo "/home/dev/.config/nvim/autoload/plug.vim" --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim';
 
-RUN nvim --headless +PlugInstall +qall
+RUN nvim --headless +PlugInstall +qall; \
+    timeout 1m nvim --headless +CocInstall; exit 0
 
 CMD ["fish"]
