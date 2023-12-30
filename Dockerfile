@@ -1,8 +1,18 @@
 FROM ubuntu:22.04
 
 RUN set -eux; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
+    apt-get update && \
+    apt-get -y install sudo; \
+    adduser --disabled-password dev; \
+    adduser dev sudo; \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER dev
+WORKDIR /home/dev
+
+RUN set -eux; \
+    sudo apt-get update; \
+    sudo apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         cmake \
@@ -15,7 +25,6 @@ RUN set -eux; \
         jq \
         make \
         ncdu \
-        nodejs \
         openssh-client \
         python3 \
         python3-pip \
@@ -27,23 +36,37 @@ RUN set -eux; \
         xclip \
         zip \
     ; \
-    curl -L https://github.com/neovim/neovim-releases/releases/download/nightly/nvim-linux64.deb -o nvim-linux64.deb; \
-        apt-get install -y ./nvim-linux64.deb; \
-        rm -rf nvim-linux64.deb; \
     pip3 install --upgrade pip; \
     pip3 install -U \
         setuptools \
         wheel \
     ; \
-    rm -rf /var/lib/apt/lists/*
-
-RUN useradd --create-home --shell /usr/bin/fish dev
-USER dev
-WORKDIR /home/dev
-
-RUN mkdir -p /home/dev/git; \
-    mkdir -p /home/dev/.config/fish;
+    mkdir -p /home/dev/git; \
+    mkdir -p /home/dev/.config/fish; \
+    mkdir -p /home/dev/.config/nvim; \
+    sudo rm -rf /var/lib/apt/lists/*
 
 COPY config.fish /home/dev/.config/fish/config.fish
+
+ENV XDG_CONFIG_HOME /home/dev/.config
+ENV XDG_DATA_HOME /home/dev/.local/share
+
+# Using nix for some non-x86 binaries.
+RUN curl -L https://nixos.org/nix/install -o install; \
+    sh ./install; \
+    rm install;
+
+ENV PATH=/home/dev/.nix-profile/bin:$PATH
+
+RUN nix-env -iA nixpkgs.neovim; \
+    nix-env -iA nixpkgs.nodejs
+
+COPY init.vim /home/dev/.config/nvim/init.vim
+
+RUN set -eux; \
+    sh -c 'curl -fLo "/home/dev/.config/nvim/autoload/plug.vim" --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim';
+
+RUN nvim --headless +PlugInstall +qall
 
 CMD ["fish"]
