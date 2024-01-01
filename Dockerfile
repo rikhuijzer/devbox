@@ -49,6 +49,7 @@ RUN set -eux; \
         wget \
         xclip \
         zip \
+        zlib1g-dev \
     ; \
     sudo ln -s /usr/bin/clang-17 /usr/bin/clang; \
     sudo ln -s /usr/bin/clangd-17 /usr/bin/clangd; \
