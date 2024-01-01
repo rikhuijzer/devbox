@@ -62,6 +62,7 @@ RUN set -eux; \
     mkdir -p /home/dev/git; \
     mkdir -p /home/dev/.config/fish; \
     mkdir -p /home/dev/.config/nvim; \
+    sudo chsh -s /usr/bin/fish dev; \
     sudo rm -rf /var/lib/apt/lists/*
 
 COPY config.fish /home/dev/.config/fish/config.fish
@@ -78,15 +79,15 @@ ENV PATH=/home/dev/.nix-profile/bin:$PATH
 
 RUN nix-env -iA nixpkgs.neovim; \
     nix-env -iA nixpkgs.nodejs; \
-    nix-env -iA nixpkgs.fzf; \
-    nix-env -iA nixpkgs.ripgrep; \
-    sudo chsh -s /usr/bin/fish dev
+    nix-env -iA nixpkgs.ripgrep;
 
 COPY init.vim /home/dev/.config/nvim/init.vim
 
 RUN set -eux; \
     sh -c 'curl -fLo "/home/dev/.config/nvim/autoload/plug.vim" --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim';
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'; \
+    git clone --depth=1 https://github.com/junegunn/fzf.git ~/.fzf; \
+    ~/.fzf/install;
 
 RUN nvim --headless +PlugInstall +qall; \
     printf "\nWaiting 1 minute for CocInstall to finish..."; \
