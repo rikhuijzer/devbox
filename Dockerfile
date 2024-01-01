@@ -28,7 +28,6 @@ RUN set -eux; \
         curl \
         doxygen \
         fish \
-        fzf \
         git \
         gnupg \
         htop \
@@ -42,7 +41,6 @@ RUN set -eux; \
         python3 \
         python3-pip \
         ranger \
-        ripgrep \
         software-properties-common \
         unzip \
         wget \
@@ -80,6 +78,8 @@ ENV PATH=/home/dev/.nix-profile/bin:$PATH
 
 RUN nix-env -iA nixpkgs.neovim; \
     nix-env -iA nixpkgs.nodejs; \
+    nix-env -iA nixpkgs.fzf; \
+    nix-env -iA nixpkgs.ripgrep; \
     sudo chsh -s /usr/bin/fish dev
 
 COPY init.vim /home/dev/.config/nvim/init.vim
