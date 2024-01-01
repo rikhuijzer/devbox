@@ -60,7 +60,8 @@ RUN curl -L https://nixos.org/nix/install -o install; \
 ENV PATH=/home/dev/.nix-profile/bin:$PATH
 
 RUN nix-env -iA nixpkgs.neovim; \
-    nix-env -iA nixpkgs.nodejs
+    nix-env -iA nixpkgs.nodejs; \
+    sudo chsh -s /usr/bin/fish dev
 
 COPY init.vim /home/dev/.config/nvim/init.vim
 
