@@ -2,10 +2,18 @@ FROM ubuntu:22.04
 
 RUN set -eux; \
     apt-get update && \
-    apt-get -y install sudo; \
+    apt-get install -y \
+        ca-certificates \
+        sudo \
+    ; \
     adduser --disabled-password dev; \
     adduser dev sudo; \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
+    echo 'deb [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy main' >> /etc/apt/sources.list; \
+    echo 'deb-src [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy main' >> /etc/apt/sources.list; \
+    echo 'deb [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main' >> /etc/apt/sources.list; \
+    echo 'deb-src [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main' >> /etc/apt/sources.list; \
+    sudo rm -rf /var/lib/apt/lists/*
 
 USER dev
 WORKDIR /home/dev
@@ -14,29 +22,38 @@ RUN set -eux; \
     sudo apt-get update; \
     sudo apt-get install -y --no-install-recommends \
         build-essential \
-        ca-certificates \
+        clang-17 \
+        clangd-17 \
         cmake \
         curl \
+        doxygen \
         fish \
         fzf \
         git \
         gnupg \
         htop \
         jq \
+        lld-17 \
+        lsb-release \
         make \
         ncdu \
-        openssh-client \
         ninja-build \
+        openssh-client \
         python3 \
         python3-pip \
         ranger \
         ripgrep \
+        software-properties-common \
         unzip \
         wget \
         wget \
         xclip \
         zip \
     ; \
+    sudo ln -s /usr/bin/clang-17 /usr/bin/clang; \
+    sudo ln -s /usr/bin/clangd-17 /usr/bin/clangd; \
+    sudo ln -s /usr/bin/clang++-17 /usr/bin/clang++; \
+    sudo ln -s /usr/bin/lld-17 /usr/bin/lld; \
     pip3 install --upgrade pip; \
     pip3 install -U \
         setuptools \
@@ -70,6 +87,7 @@ RUN set -eux; \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim';
 
 RUN nvim --headless +PlugInstall +qall; \
+    printf "\nWaiting 1 minute for CocInstall to finish..."; \
     timeout 1m nvim --headless +CocInstall; exit 0
 
 CMD ["fish"]

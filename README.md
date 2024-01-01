@@ -7,6 +7,7 @@ My development setup for remote machines
 To use this with vast.ai, create a new template with:
 
 Image Path/Tag: `rikhuijzer/devbox` `main`
+
 Docker Options: `TZ=Europe/Amsterdam --hostname vast`
 
 Launch interactive shell with direct SSH.
