@@ -15,7 +15,7 @@ Launch interactive shell with direct SSH.
 On-start Script:
 
 ```bash
-touch ~/.no_auto_tmux;
+touch ~/.no_auto_tmux; git config --global user.email 'github@huijzer.xyz'; git config --global user.name 'Rik Huijzer'
 ```
 
 Then, after starting, the only requirement is to run:
