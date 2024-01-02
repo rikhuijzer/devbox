@@ -38,7 +38,7 @@ RUN set -eux; \
         ncdu \
         ninja-build \
         openssh-client \
-        python3 \
+        python3-dev \
         python3-pip \
         ranger \
         software-properties-common \
@@ -79,15 +79,18 @@ ENV PATH=/home/dev/.nix-profile/bin:$PATH
 
 RUN nix-env -iA nixpkgs.neovim; \
     nix-env -iA nixpkgs.nodejs; \
-    nix-env -iA nixpkgs.ripgrep;
+    nix-env -iA nixpkgs.ripgrep; \
+    nix-env -iA nixpkgs.entr;
 
 COPY init.vim /home/dev/.config/nvim/init.vim
+COPY ee.sh /usr/bin/ee
 
 RUN set -eux; \
     sh -c 'curl -fLo "/home/dev/.config/nvim/autoload/plug.vim" --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'; \
     git clone --depth=1 https://github.com/junegunn/fzf.git ~/.fzf; \
-    ~/.fzf/install;
+    ~/.fzf/install; \
+    sudo chmod +x /usr/bin/ee;
 
 RUN nvim --headless +PlugInstall +qall; \
     printf "\nWaiting 1 minute for CocInstall to finish..."; \

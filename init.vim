@@ -28,7 +28,7 @@ autocmd FileChangedShellPost *
 \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " Touch a central file to trigger watching `enter` instances.
-autocmd BufWritePost * silent! !echo $(date +\%s) > /Users/rik/git/last_nvim_write.txt
+autocmd BufWritePost * silent! !echo $(date +\%s) > "$HOME/git/last_nvim_write.txt"
 
 let g:slime_target="x11"
 
