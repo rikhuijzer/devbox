@@ -70,7 +70,7 @@ COPY config.fish /home/dev/.config/fish/config.fish
 ENV XDG_CONFIG_HOME /home/dev/.config
 ENV XDG_DATA_HOME /home/dev/.local/share
 
-# Using nix for some non-x86 binaries.
+# Using nix for some newer and non-x86 binaries.
 RUN curl -L https://nixos.org/nix/install -o install; \
     sh ./install; \
     rm install;
