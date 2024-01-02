@@ -40,6 +40,7 @@ RUN set -eux; \
         openssh-client \
         python3-dev \
         python3-pip \
+        python3-venv \
         ranger \
         software-properties-common \
         unzip \
@@ -75,7 +76,8 @@ RUN curl -L https://nixos.org/nix/install -o install; \
     sh ./install; \
     rm install;
 
-ENV PATH=/home/dev/.nix-profile/bin:$PATH
+# ~/.local/bin is used by pip to install binaries.
+ENV PATH=/home/dev/.nix-profile/bin:/home/dev/.local/bin:$PATH
 
 RUN nix-env -iA nixpkgs.neovim; \
     nix-env -iA nixpkgs.nodejs; \
