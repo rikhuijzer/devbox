@@ -57,6 +57,10 @@ RUN set -eux; \
     sudo ln -s /usr/bin/python3 /usr/bin/python; \
     pip3 install --upgrade pip; \
     pip3 install -U \
+        lit \
+        numpy \
+        pytest \
+        scipy \
         setuptools \
         wheel \
     ; \
