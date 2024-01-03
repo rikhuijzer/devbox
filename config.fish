@@ -24,6 +24,9 @@ set -x PIPENV_VENV_IN_PROJECT 1
 set -x LANG en_US.UTF-8
 set -x TRITON_BUILD_WITH_CLANG_LLD true
 
+# Python packages.
+fish_add_path "$HOME/.local/bin"
+
 function fish_prompt
     printf '%s@%s %s%s%s (%sDEVBOX%s)> ' $USER DEVBOX \
         (set_color $fish_color_cwd) (prompt_pwd) (set_color normal) \
