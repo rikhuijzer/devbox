@@ -58,8 +58,11 @@ RUN set -eux; \
     pip3 install --upgrade pip; \
     pip3 install -U \
         lit \
+        matplotlib \
         numpy \
+        pandas \
         pytest \
+        pytest-xdist \
         scipy \
         setuptools \
         wheel \

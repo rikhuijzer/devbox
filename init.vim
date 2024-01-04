@@ -13,6 +13,9 @@ syntax on
 " Disabled because it always auto-wraps.
 set textwidth=0
 
+" Allow copying to clipboard.
+set mouse=r
+
 " Quick map for escaping insert mode.
 inoremap <C-k> <Esc>
 noremap <C-k> <Esc>
